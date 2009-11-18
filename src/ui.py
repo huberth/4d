@@ -4,11 +4,13 @@ import pygame
 
 pygame.init()
 
+import input
+
 ##################################################
 
 # global UI variables
 
-res = ( 800, 800 )
+res = ( 600, 600 )
 fps = 60
 clock = pygame.time.Clock()
 
@@ -69,7 +71,7 @@ class ScreenStack:
         self.stack.append(screen)
 
     def main_loop(self):
-        self.handle_input()
+        input.read_input()
 
         # draw each layer, bottom to top
         self.surface.fill(pygame.Color(0,0,0))
@@ -77,16 +79,13 @@ class ScreenStack:
             screen.draw(self.surface)
         
         # however, only update the top surface with input
-        result = self.stack[-1].update(None)  # TODO: where's the input?
+        result = self.stack[-1].update(input.last_frame)
         if not result:
             self.stack.pop()
 
         clock.tick(fps)
 
         pygame.display.flip()
-
-    def handle_input(self):
-        pass
 
 ##################################################
 
